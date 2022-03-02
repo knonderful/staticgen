@@ -1,0 +1,16 @@
+[package]
+name = "staticgen"
+version = "0.1.0"
+edition = "2021"
+description = "Generates static-compatible code from a data structure."
+
+[dependencies]
+serde = ">=1.0.136, <2"
+dtoa = "1.0.2"
+itoa = "1.0.1"
+
+[dev-dependencies]
+serde = { version = ">=1.0.136, <2", features = ["derive"] }
+ron = { git = "https://github.com/ron-rs/ron" }
+paste = "1.0.6"
+toolchain_find = "0.2.0"
