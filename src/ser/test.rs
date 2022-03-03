@@ -280,12 +280,12 @@ struct TestData {
     undefined_option: Option<u8>,
 }
 
-fn format_rs_file(path: &str) {
+fn format_rs_file(path: &str) -> Result<(), String> {
     // NB: We'd like to use the rustfmt-nightly as a lib for this, but that requires nightly
     // features, so instead we'll just call the rustfmt tool as a process.
 
     let rustfmt = toolchain_find::find_installed_component("rustfmt")
-        .expect("This test requires 'rustfmt' on the local toolchain.");
+        .ok_or_else(|| String::from("This test requires 'rustfmt' on the local toolchain."))?;
 
     let mut process = std::process::Command::new(&rustfmt)
         .arg(path)
@@ -293,17 +293,18 @@ fn format_rs_file(path: &str) {
         .stdout(std::process::Stdio::piped())
         .stderr(std::process::Stdio::piped())
         .spawn()
-        .unwrap();
+        .map_err(|err| format!("Could not spawn process: {}", err))?;
 
     let out = process.wait_with_output().unwrap();
-    let code = out.status.code().expect("Did not get exit code.");
+    let code = out.status.code().ok_or_else(|| String::from("Did not get exit code."))?;
     if code != 0 {
         panic!(
             "rustfmt failed with code {code}.\n===STDOUT===\n{}\n===STDERR===\n{}\n",
-            String::from_utf8(out.stdout).unwrap(),
-            String::from_utf8(out.stderr).unwrap()
+            String::from_utf8(out.stdout).unwrap_or_else(|_| String::from("(Not valid UTF-8)")),
+            String::from_utf8(out.stderr).unwrap_or_else(|_| String::from("(Not valid UTF-8)")),
         );
     }
+    Ok(())
 }
 
 #[test]
