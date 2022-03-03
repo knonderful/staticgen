@@ -14,4 +14,4 @@ linked-hash-map = "0.5.4"
 serde = { version = ">=1.0.136, <2", features = ["derive"] }
 ron = { git = "https://github.com/ron-rs/ron" }
 paste = "1.0.6"
-toolchain_find = "0.2.0"
+rust-format = { git = "https://github.com/knonderful/rust-format", rev = "b508520" }

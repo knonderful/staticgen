@@ -281,33 +281,6 @@ struct TestData {
     undefined_option: Option<u8>,
 }
 
-fn format_rs_file(path: &str) -> Result<(), String> {
-    // NB: We'd like to use the rustfmt-nightly as a lib for this, but that requires nightly
-    // features, so instead we'll just call the rustfmt tool as a process.
-
-    let rustfmt = toolchain_find::find_installed_component("rustfmt")
-        .ok_or_else(|| String::from("This test requires 'rustfmt' on the local toolchain."))?;
-
-    let mut process = std::process::Command::new(&rustfmt)
-        .arg(path)
-        .stdin(std::process::Stdio::piped())
-        .stdout(std::process::Stdio::piped())
-        .stderr(std::process::Stdio::piped())
-        .spawn()
-        .map_err(|err| format!("Could not spawn process: {}", err))?;
-
-    let out = process.wait_with_output().unwrap();
-    let code = out.status.code().ok_or_else(|| String::from("Did not get exit code."))?;
-    if code != 0 {
-        panic!(
-            "rustfmt failed with code {code}.\n===STDOUT===\n{}\n===STDERR===\n{}\n",
-            String::from_utf8(out.stdout).unwrap_or_else(|_| String::from("(Not valid UTF-8)")),
-            String::from_utf8(out.stderr).unwrap_or_else(|_| String::from("(Not valid UTF-8)")),
-        );
-    }
-    Ok(())
-}
-
 #[test]
 fn test_testdata() {
     use std::fs::File;
@@ -338,8 +311,8 @@ fn test_testdata() {
     structs.write(&mut output_types_file).unwrap();
     enums.write(&mut output_types_file).unwrap();
 
-    format_rs_file(ACTUAL_FN_PATH);
-    format_rs_file(ACTUAL_TYPES_PATH);
+    rust_format::format_file(ACTUAL_FN_PATH).unwrap();
+    rust_format::format_file(ACTUAL_TYPES_PATH).unwrap();
 
     use std::fs::read_to_string;
     assert_eq!(
