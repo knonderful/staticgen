@@ -25,9 +25,9 @@ use crate::ser::tuple_struct_serializer::TupleStructSerializer;
 use crate::ser::tuple_variant_serializer::TupleVariantSerializer;
 use serde::Serialize;
 use std::borrow::Cow;
-use std::collections::HashMap;
 use std::fmt::{Debug, Display, Formatter};
 use std::io::Write;
+use linked_hash_map::LinkedHashMap;
 
 #[derive(Debug)]
 pub enum Error {
@@ -154,7 +154,7 @@ where
 }
 
 #[derive(Clone, Default, Debug)]
-pub struct Structs(HashMap<Cow<'static, str>, Structured>);
+pub struct Structs(LinkedHashMap<Cow<'static, str>, Structured>);
 
 struct CodeWriteContext<'a, W>
 where
@@ -306,7 +306,7 @@ impl Structs {
 }
 
 #[derive(Clone, Default, Debug)]
-pub struct Enums(HashMap<Cow<'static, str>, HashMap<Cow<'static, str>, Structured>>);
+pub struct Enums(LinkedHashMap<Cow<'static, str>, LinkedHashMap<Cow<'static, str>, Structured>>);
 
 impl Enums {
     pub fn merge(
@@ -325,7 +325,7 @@ impl Enums {
                 Ok(())
             }
         } else {
-            let mut new_enum = HashMap::new();
+            let mut new_enum = LinkedHashMap::new();
             new_enum.insert(variant.clone(), structure);
             self.0.insert(name.clone(), new_enum);
             Ok(())

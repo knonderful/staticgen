@@ -8,6 +8,7 @@ description = "Generates static-compatible code from a data structure."
 serde = ">=1.0.136, <2"
 dtoa = "1.0.2"
 itoa = "1.0.1"
+linked-hash-map = "0.5.4"
 
 [dev-dependencies]
 serde = { version = ">=1.0.136, <2", features = ["derive"] }

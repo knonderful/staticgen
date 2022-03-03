@@ -3,18 +3,18 @@
 use crate::ser::Error;
 use std::borrow::{Borrow, Cow};
 use std::cell::BorrowMutError;
-use std::collections::HashMap;
+use linked_hash_map::LinkedHashMap;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct StructuredStructBuilder {
-    fields: HashMap<Cow<'static, str>, FieldType>,
+    fields: LinkedHashMap<Cow<'static, str>, FieldType>,
     target_len: usize,
 }
 
 impl StructuredStructBuilder {
     fn new(len: usize) -> Self {
         Self {
-            fields: HashMap::with_capacity(len),
+            fields: LinkedHashMap::with_capacity(len),
             target_len: len,
         }
     }
@@ -47,15 +47,15 @@ impl StructuredStructBuilder {
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct StructuredStruct {
-    fields: HashMap<Cow<'static, str>, FieldType>,
+    fields: LinkedHashMap<Cow<'static, str>, FieldType>,
 }
 
 impl StructuredStruct {
-    pub fn new(fields: HashMap<Cow<'static, str>, FieldType>) -> Self {
+    pub fn new(fields: LinkedHashMap<Cow<'static, str>, FieldType>) -> Self {
         Self { fields }
     }
 
-    pub fn fields(&self) -> &HashMap<Cow<'static, str>, FieldType> {
+    pub fn fields(&self) -> &LinkedHashMap<Cow<'static, str>, FieldType> {
         &self.fields
     }
 
