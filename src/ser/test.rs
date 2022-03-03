@@ -2,7 +2,7 @@ use super::{CodeWriter, FieldType, Serializer};
 use crate::ser::Error;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap};
-use std::io::Write;
+use std::io::{Read, Write};
 use std::process::ExitStatus;
 use std::ptr::write;
 
@@ -312,11 +312,14 @@ fn format_rs_file(path: &str) -> Result<(), String> {
 fn test_testdata() {
     use std::fs::File;
 
+    const ACTUAL_FN_PATH: &'static str = "target/testdata_fn.rs";
+    const ACTUAL_TYPES_PATH: &'static str = "target/testdata_types.rs";
+
     let input_file = File::open("resources/test/testdata_input.ron").unwrap();
     let input: TestData = ron::de::from_reader(input_file).unwrap();
 
     let (structs, enums) = {
-        let mut output_fn_file = File::create("target/testdata_fn.rs").unwrap();
+        let mut output_fn_file = File::create(ACTUAL_FN_PATH).unwrap();
 
         writeln!(output_fn_file, "pub const fn test_data() -> TestData {{").unwrap();
         let mut serializer = Serializer::new(&mut output_fn_file);
@@ -331,10 +334,20 @@ fn test_testdata() {
         (structs, enums)
     };
 
-    let mut output_types_file = File::create("target/testdata_types.rs").unwrap();
+    let mut output_types_file = File::create(ACTUAL_TYPES_PATH).unwrap();
     structs.write(&mut output_types_file).unwrap();
     enums.write(&mut output_types_file).unwrap();
 
-    format_rs_file("target/testdata_fn.rs");
-    format_rs_file("target/testdata_types.rs");
+    format_rs_file(ACTUAL_FN_PATH);
+    format_rs_file(ACTUAL_TYPES_PATH);
+
+    use std::fs::read_to_string;
+    assert_eq!(
+        read_to_string("resources/test/testdata_fn_expected.rs").unwrap(),
+        read_to_string(ACTUAL_FN_PATH).unwrap(),
+    );
+    assert_eq!(
+        read_to_string("resources/test/testdata_types_expected.rs").unwrap(),
+        read_to_string(ACTUAL_TYPES_PATH).unwrap(),
+    );
 }
