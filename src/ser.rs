@@ -374,20 +374,12 @@ impl<W> Serializer<W> {
         &mut self.structs
     }
 
-    pub fn take_structs(&mut self) -> Structs {
-        std::mem::take(&mut self.structs)
-    }
-
     pub fn enums(&self) -> &Enums {
         &self.enums
     }
 
     pub fn enums_mut(&mut self) -> &mut Enums {
         &mut self.enums
-    }
-
-    pub fn take_enums(&mut self) -> Enums {
-        std::mem::take(&mut self.enums)
     }
 }
 
