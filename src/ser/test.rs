@@ -274,7 +274,8 @@ struct TestData {
     test_enum: TestEnum,
     seq: Vec<u8>,
     option: Option<u8>,
-    map: BTreeMap<String, TestStruct2>, // BTreeMap so we get predictable iteration order
+    map: BTreeMap<String, TestStruct2>,
+    // BTreeMap so we get predictable iteration order
     enum_variants: Vec<TestEnum2>,
     undefined_vec: Vec<u8>,
     undefined_option: Option<u8>,
