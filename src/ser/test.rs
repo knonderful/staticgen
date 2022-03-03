@@ -316,9 +316,7 @@ fn test_testdata() {
     let (structs, enums) = {
         let mut output_fn_file = File::create("target/testdata_fn.rs").unwrap();
 
-        output_fn_file
-            .write_all("pub const fn test_data() -> TestData {\n".as_bytes())
-            .unwrap();
+        writeln!(output_fn_file, "pub const fn test_data() -> TestData {{").unwrap();
         let mut serializer = Serializer::new(&mut output_fn_file);
         let field_type = input.serialize(&mut serializer).unwrap();
         let structs = std::mem::take(&mut serializer.structs);
@@ -326,7 +324,7 @@ fn test_testdata() {
 
         assert_struct(&field_type);
 
-        output_fn_file.write_all("\n}\n".as_bytes()).unwrap();
+        writeln!(output_fn_file, "}}").unwrap();
 
         (structs, enums)
     };
