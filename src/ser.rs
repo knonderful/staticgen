@@ -366,6 +366,10 @@ impl<W> Serializer<W> {
         }
     }
 
+    pub fn out(&self) -> &W {
+        &self.writer.out
+    }
+
     pub fn out_mut(&mut self) -> &mut W {
         &mut self.writer.out
     }
