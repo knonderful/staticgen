@@ -291,7 +291,7 @@ impl Structs {
     pub fn write(&self, out: &mut impl Write) -> std::io::Result<()> {
         let mut writer = CodeWriter::new(out);
         for (name, structure) in self.0.iter() {
-            writer.write("pub struct ")?;
+            writer.write("#[derive(Clone, Debug, PartialEq)] pub struct ")?;
             writer.write(name)?;
             structure.write(CodeWriteContext::new(&mut writer, true))?;
 
@@ -335,7 +335,7 @@ impl Enums {
     pub fn write(&self, out: &mut impl Write) -> std::io::Result<()> {
         let mut writer = CodeWriter::new(out);
         for (name, variants) in self.0.iter() {
-            writer.write("pub enum ")?;
+            writer.write("#[derive(Clone, Debug, PartialEq)] pub enum ")?;
             writer.write(name)?;
             writer.struct_begin()?;
             for (variant, structure) in variants {

@@ -1,17 +1,22 @@
+#[derive(Clone, Debug, PartialEq)]
 pub struct TestStruct3(pub u32);
+#[derive(Clone, Debug, PartialEq)]
 pub struct TestStruct2 {
     pub u16: Option<u16>,
     pub test_struct_3: TestStruct3,
 }
+#[derive(Clone, Debug, PartialEq)]
 pub struct TestStruct {
     pub string: &'static str,
     pub test_struct_2: TestStruct2,
 }
+#[derive(Clone, Debug, PartialEq)]
 pub struct Generated1 {
     pub alpha: TestStruct2,
     pub beta: TestStruct2,
     pub gamma: TestStruct2,
 }
+#[derive(Clone, Debug, PartialEq)]
 pub struct TestData {
     pub u8: u8,
     pub u16: u16,
@@ -37,9 +42,11 @@ pub struct TestData {
     pub undefined_vec: &'static [()],
     pub undefined_option: Option<()>,
 }
+#[derive(Clone, Debug, PartialEq)]
 pub enum TestEnum {
     UnitVariant,
 }
+#[derive(Clone, Debug, PartialEq)]
 pub enum TestEnum2 {
     Rgba { r: u8, g: u8, b: u8, a: u8 },
     Compressed(&'static [u8]),
