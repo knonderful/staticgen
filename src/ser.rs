@@ -349,6 +349,88 @@ impl Enums {
     }
 }
 
+/// A [`Serializer`](serde::ser::Serializer) for generating static code from
+/// [`Serialize`](serde::Serialize)-able data.
+///
+/// The [`serialize()`](serde::Serialize::serialize) call returns a [`FieldType`], which represents
+/// the (outer-most) type that was serialized. This is mostly useful internally for the serializer
+/// implementation.
+///
+/// Additionally, [`structs()`](Serializer::structs) and [`enums()`](Serializer::enums) return the
+/// structs and enums that were found during serialization. These can be used to generate the types
+/// corresponding to the static code that was written to the output.
+///
+/// Note that the generated code is not formatted in any way. Source code formatting should be
+/// handled by the caller, for instance by using a crate like
+/// [`rust-format`](https://github.com/knonderful/rust-format).
+///
+/// # Examples
+///
+/// ```
+/// use serde::Serialize;
+/// use staticgen::Serializer;
+///
+/// // Some example struct
+/// #[derive(Serialize)]
+/// struct Example {
+///     field_u8: u8,
+///     field_str: String,
+/// }
+///
+/// // Some example data
+/// let data = vec![
+///     Example { field_u8: 123, field_str: String::from("Hello"), },
+///     Example { field_u8: 134, field_str: String::from("World"), },
+/// ];
+///
+/// // Create a Serializer<Vec<u8>>
+/// let mut serializer = staticgen::Serializer::new(Vec::new());
+/// data.serialize(&mut serializer).unwrap();
+///
+/// // Check the serialized output
+/// let output = std::mem::take(serializer.out_mut());
+/// assert_eq!(
+///     String::from_utf8(output),
+///     Ok(String::from("&[Example {field_u8: 123, field_str: \"Hello\",  }, Example {field_u8: 134, field_str: \"World\",  }, ]")),
+/// );
+///
+/// // Serialize the struct that was generated and verify its content
+/// let mut types_output = Vec::new();
+/// serializer.structs().write(&mut types_output).unwrap();
+/// assert_eq!(
+///     String::from_utf8(types_output),
+///     Ok(String::from("#[derive(Clone, Debug, PartialEq)] pub struct Example {pub field_u8: u8, pub field_str: &'static str,  }")),
+/// )
+/// ```
+///
+/// A common use-case would be to write `types_output` and `output` from the above example to a
+/// file, wrapping `output` in a `const fn`, and include it in the source tree to be used in the
+/// other source code, like so:
+///
+/// ```
+/// // File: generated.rs
+/// #[derive(Clone, Debug, PartialEq)]
+/// pub struct Example {
+///     pub field_u8: u64,
+///     pub field_str: &'static str,
+/// }
+///
+/// pub const fn example_data() -> &'static [Example] {
+///     &[
+///         Example { field_u8: 123, field_str: "Hello" },
+///         Example { field_u8: 345, field_str: "World" },
+///     ]
+/// }
+///
+/// // File: main.rs
+/// static EXAMPLE_DATA: &'static [Example] = example_data();
+///
+/// pub fn main() {
+///     for x in EXAMPLE_DATA {
+///         println!("We have {} with {}.", x.field_u8, x.field_str);
+///     }
+/// }
+/// ```
 pub struct Serializer<W> {
     writer: CodeWriter<W>,
     structs: Structs,
