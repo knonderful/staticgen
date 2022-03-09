@@ -23,11 +23,11 @@ use crate::ser::struct_variant_serializer::StructVariantSerializer;
 use crate::ser::tuple_serializer::TupleSerializer;
 use crate::ser::tuple_struct_serializer::TupleStructSerializer;
 use crate::ser::tuple_variant_serializer::TupleVariantSerializer;
+use linked_hash_map::LinkedHashMap;
 use serde::Serialize;
 use std::borrow::Cow;
 use std::fmt::{Debug, Display, Formatter};
 use std::io::Write;
-use linked_hash_map::LinkedHashMap;
 
 #[derive(Debug)]
 pub enum Error {
