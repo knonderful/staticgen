@@ -351,8 +351,8 @@ impl Enums {
 
 pub struct Serializer<W> {
     writer: CodeWriter<W>,
-    pub structs: Structs,
-    pub enums: Enums,
+    structs: Structs,
+    enums: Enums,
     generated_struct_seed: usize,
 }
 
