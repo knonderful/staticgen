@@ -1,3 +1,7 @@
+//! A crate for generating static-compatible source code from serializable data.
+//!
+//! See [`Serializer`] for more information.
+
 mod model;
 mod ser;
 
