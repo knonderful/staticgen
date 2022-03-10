@@ -1,10 +1,8 @@
-use super::{CodeWriter, FieldType, Serializer};
+use super::{FieldType, Serializer};
 use crate::ser::Error;
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeMap, HashMap};
-use std::io::{Read, Write};
-use std::process::ExitStatus;
-use std::ptr::write;
+use std::collections::BTreeMap;
+use std::io::Write;
 
 fn create_serializer() -> Serializer<Vec<u8>> {
     Serializer::new(Vec::new())
@@ -68,8 +66,11 @@ struct Container {
 
 #[derive(Serialize)]
 enum EnumTest {
+    #[allow(unused)]
     UnitVariant,
+    #[allow(unused)]
     StructVariant { width: usize, simple: Simple },
+    #[allow(unused)]
     TupleVariant(usize, Simple),
 }
 

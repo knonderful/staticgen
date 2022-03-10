@@ -1,8 +1,6 @@
 use super::Error;
-use super::Serializer;
 use crate::model::{FieldType, StructuredTuple, StructuredTupleBuilder};
-use crate::ser::{CodeWriter, CodeWriterResult};
-use serde::Serialize;
+use crate::ser::CodeWriter;
 use std::io::Write;
 
 pub struct TupleUtil {

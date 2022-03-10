@@ -1,8 +1,6 @@
 use super::Error;
-use super::Serializer;
 use crate::model::{FieldType, StructuredStruct, StructuredStructBuilder};
-use crate::ser::{CodeWriter, CodeWriterResult};
-use serde::Serialize;
+use crate::ser::CodeWriter;
 use std::borrow::Cow;
 use std::io::Write;
 

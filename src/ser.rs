@@ -1,5 +1,3 @@
-#![allow(unused)]
-
 mod dummy;
 mod map_serializer;
 mod seq_serializer;
@@ -15,7 +13,6 @@ mod tuple_variant_serializer;
 mod test;
 
 use crate::model::{FieldType, Structured};
-use crate::ser::dummy::Dummy;
 use crate::ser::map_serializer::MapSerializer;
 use crate::ser::seq_serializer::SeqSerializer;
 use crate::ser::struct_serializer::StructSerializer;

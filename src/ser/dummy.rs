@@ -13,7 +13,7 @@ where
     type Ok = Ok;
     type Error = Error;
 
-    fn serialize_element<T: ?Sized>(&mut self, value: &T) -> Result<(), Self::Error>
+    fn serialize_element<T: ?Sized>(&mut self, _value: &T) -> Result<(), Self::Error>
     where
         T: Serialize,
     {
@@ -32,7 +32,7 @@ where
     type Ok = Ok;
     type Error = Error;
 
-    fn serialize_element<T: ?Sized>(&mut self, value: &T) -> Result<(), Self::Error>
+    fn serialize_element<T: ?Sized>(&mut self, _value: &T) -> Result<(), Self::Error>
     where
         T: Serialize,
     {
@@ -51,7 +51,7 @@ where
     type Ok = Ok;
     type Error = Error;
 
-    fn serialize_field<T: ?Sized>(&mut self, value: &T) -> Result<(), Self::Error>
+    fn serialize_field<T: ?Sized>(&mut self, _value: &T) -> Result<(), Self::Error>
     where
         T: Serialize,
     {
@@ -70,7 +70,7 @@ where
     type Ok = Ok;
     type Error = Error;
 
-    fn serialize_field<T: ?Sized>(&mut self, value: &T) -> Result<(), Self::Error>
+    fn serialize_field<T: ?Sized>(&mut self, _value: &T) -> Result<(), Self::Error>
     where
         T: Serialize,
     {
@@ -89,14 +89,14 @@ where
     type Ok = Ok;
     type Error = Error;
 
-    fn serialize_key<T: ?Sized>(&mut self, key: &T) -> Result<(), Self::Error>
+    fn serialize_key<T: ?Sized>(&mut self, _key: &T) -> Result<(), Self::Error>
     where
         T: Serialize,
     {
         unimplemented!("Should not be called.")
     }
 
-    fn serialize_value<T: ?Sized>(&mut self, value: &T) -> Result<(), Self::Error>
+    fn serialize_value<T: ?Sized>(&mut self, _value: &T) -> Result<(), Self::Error>
     where
         T: Serialize,
     {
@@ -117,8 +117,8 @@ where
 
     fn serialize_field<T: ?Sized>(
         &mut self,
-        key: &'static str,
-        value: &T,
+        _key: &'static str,
+        _value: &T,
     ) -> Result<(), Self::Error>
     where
         T: Serialize,
@@ -140,8 +140,8 @@ where
 
     fn serialize_field<T: ?Sized>(
         &mut self,
-        key: &'static str,
-        value: &T,
+        _key: &'static str,
+        _value: &T,
     ) -> Result<(), Self::Error>
     where
         T: Serialize,

@@ -1,9 +1,7 @@
 use super::Error;
 use super::Serializer;
-use crate::model::{FieldType, StructuredTuple, StructuredTupleBuilder};
-use crate::ser::tuple_util::TupleUtil;
+use crate::model::FieldType;
 use serde::Serialize;
-use std::borrow::Cow;
 use std::io::Write;
 
 pub struct SeqSerializer<'a, W> {

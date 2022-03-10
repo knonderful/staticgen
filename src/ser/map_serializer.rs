@@ -2,17 +2,11 @@ mod key_serializer;
 
 use super::Error;
 use super::Serializer;
-use crate::model::{
-    FieldType, Structured, StructuredStruct, StructuredStructBuilder, StructuredTuple,
-    StructuredTupleBuilder,
-};
+use crate::model::{FieldType, Structured};
 use crate::ser::map_serializer::key_serializer::MapKeySerializer;
 use crate::ser::struct_util::StructUtil;
-use crate::ser::tuple_util::TupleUtil;
-use crate::ser::Structs;
 use serde::Serialize;
 use std::borrow::Cow;
-use std::fmt::Debug;
 use std::io::Write;
 
 pub struct MapSerializer<'a, W> {
