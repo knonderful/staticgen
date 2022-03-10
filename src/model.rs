@@ -1,9 +1,9 @@
 #![allow(unused)]
 
 use crate::ser::Error;
+use linked_hash_map::LinkedHashMap;
 use std::borrow::{Borrow, Cow};
 use std::cell::BorrowMutError;
-use linked_hash_map::LinkedHashMap;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct StructuredStructBuilder {

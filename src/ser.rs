@@ -275,7 +275,11 @@ impl CodeWrite for Option<&FieldType> {
 }
 
 impl Structs {
-    pub(crate) fn merge(&mut self, name: &Cow<'static, str>, structure: Structured) -> Result<(), Error> {
+    pub(crate) fn merge(
+        &mut self,
+        name: &Cow<'static, str>,
+        structure: Structured,
+    ) -> Result<(), Error> {
         if let Some(existing_structure) = self.0.get_mut(name) {
             existing_structure
                 .merge(&structure)
@@ -285,7 +289,6 @@ impl Structs {
             Ok(())
         }
     }
-
 
     /// Write the struct declarations to the provided output.
     ///
