@@ -417,14 +417,14 @@ impl Enums {
 /// // File: generated.rs
 /// #[derive(Clone, Debug, PartialEq)]
 /// pub struct Example {
-///     pub field_u8: u64,
+///     pub field_u8: u8,
 ///     pub field_str: &'static str,
 /// }
 ///
 /// pub const fn example_data() -> &'static [Example] {
 ///     &[
 ///         Example { field_u8: 123, field_str: "Hello" },
-///         Example { field_u8: 345, field_str: "World" },
+///         Example { field_u8: 134, field_str: "World" },
 ///     ]
 /// }
 ///
