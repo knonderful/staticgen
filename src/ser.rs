@@ -150,6 +150,7 @@ where
     }
 }
 
+/// A container for `struct`s that were generated during serialization.
 #[derive(Clone, Default, Debug)]
 pub struct Structs(LinkedHashMap<Cow<'static, str>, Structured>);
 
@@ -274,7 +275,7 @@ impl CodeWrite for Option<&FieldType> {
 }
 
 impl Structs {
-    pub fn merge(&mut self, name: &Cow<'static, str>, structure: Structured) -> Result<(), Error> {
+    pub(crate) fn merge(&mut self, name: &Cow<'static, str>, structure: Structured) -> Result<(), Error> {
         if let Some(existing_structure) = self.0.get_mut(name) {
             existing_structure
                 .merge(&structure)
@@ -285,6 +286,12 @@ impl Structs {
         }
     }
 
+
+    /// Write the struct declarations to the provided output.
+    ///
+    /// # Arguments
+    ///
+    /// * `out`: The output.
     pub fn write(&self, out: &mut impl Write) -> std::io::Result<()> {
         let mut writer = CodeWriter::new(out);
         for (name, structure) in self.0.iter() {
@@ -302,11 +309,12 @@ impl Structs {
     }
 }
 
+/// A container for `enum`s that were generated during serialization.
 #[derive(Clone, Default, Debug)]
 pub struct Enums(LinkedHashMap<Cow<'static, str>, LinkedHashMap<Cow<'static, str>, Structured>>);
 
 impl Enums {
-    pub fn merge(
+    pub(crate) fn merge(
         &mut self,
         name: &Cow<'static, str>,
         variant: &Cow<'static, str>,
@@ -329,6 +337,11 @@ impl Enums {
         }
     }
 
+    /// Write the enum declarations to the provided output.
+    ///
+    /// # Arguments
+    ///
+    /// * `out`: The output.
     pub fn write(&self, out: &mut impl Write) -> std::io::Result<()> {
         let mut writer = CodeWriter::new(out);
         for (name, variants) in self.0.iter() {
@@ -348,10 +361,6 @@ impl Enums {
 
 /// A [`Serializer`](serde::ser::Serializer) for generating static code from
 /// [`Serialize`](serde::Serialize)-able data.
-///
-/// The [`serialize()`](serde::Serialize::serialize) call returns a [`FieldType`], which represents
-/// the (outer-most) type that was serialized. This is mostly useful internally for the serializer
-/// implementation.
 ///
 /// Additionally, [`structs()`](Serializer::structs) and [`enums()`](Serializer::enums) return the
 /// structs and enums that were found during serialization. These can be used to generate the types
@@ -445,26 +454,32 @@ impl<W> Serializer<W> {
         }
     }
 
+    /// Retrieves a reference to the serialization output.
     pub fn out(&self) -> &W {
         &self.writer.out
     }
 
+    /// Retrieves e mutable reference to the serialization output.
     pub fn out_mut(&mut self) -> &mut W {
         &mut self.writer.out
     }
 
+    /// Retrieves a reference to the [`Structs`].
     pub fn structs(&self) -> &Structs {
         &self.structs
     }
 
+    /// Retrieves a mutable reference to the [`Structs`].
     pub fn structs_mut(&mut self) -> &mut Structs {
         &mut self.structs
     }
 
+    /// Retrieves a reference to the [`Enums`].
     pub fn enums(&self) -> &Enums {
         &self.enums
     }
 
+    /// Retrieves a mutable reference to the [`Enums`].
     pub fn enums_mut(&mut self) -> &mut Enums {
         &mut self.enums
     }
